@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <style>
+        nav {
+            background-color: lavender;
+            padding: 1em; 
+            margin: auto;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        #container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .product p {
+            margin: 5px 0;
+        }
+        .product button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="constructor_product.html">Product page</a></li>
+            <li><a href="constuctor1.html">Admin page</a></li>
+        </ul>
+    </nav>
+    <div id="product-count">Total Products: 0</div>
+    <div id="container"></div>
+
+    <script>
+        // Function to get data from local storage and display it
+        function getData() {
+            let container = document.getElementById("container");
+            let productCount = document.getElementById("product-count");
+            container.innerHTML = ""; // Clear any existing content
+
+            let dataArr = JSON.parse(localStorage.getItem("sortedData")) || [];
+            productCount.innerText = `Total Products: ${dataArr.length}`;
+
+            dataArr.forEach((element, index) => {
+                let productDiv = document.createElement("div");
+                productDiv.className = "product";
+
+                let h3 = document.createElement("h3");
+                h3.innerText = element.product;
+
+                let h4 = document.createElement("h4");
+                h4.innerText = element.category;
+
+                let img = document.createElement("img"); 
+                img.src = element.image;
+                img.alt = "Product Image"; 
+
+                let price = document.createElement("p");
+                price.innerText = "Price: $" + element.price;
+
+                let gender = document.createElement("p");
+                gender.innerText = "Gender: " + element.gender;
+
+                let avail = document.createElement("p");
+                avail.id = `sold-${index}`;
+                avail.innerText = "Sold: " + (element.sold ? "Yes" : "No");
+
+                let removeButton = document.createElement("button");
+                removeButton.innerText = "Remove";
+                removeButton.onclick = function() {
+                    removeProduct(index);
+                };
+
+                let soldButton = document.createElement("button");
+                soldButton.innerText = "Sold";
+                soldButton.onclick = function() {
+                    toggleSoldStatus(index);
+                };
+
+                productDiv.append(h3, h4, img, price, gender, avail, removeButton, soldButton);
+                container.appendChild(productDiv);
+            });
+        }
+
+        // Function to remove a product
+        function removeProduct(index) {
+            let dataArr = JSON.parse(localStorage.getItem("sortedData")) || [];
+            dataArr.splice(index, 1);
+            localStorage.setItem("sortedData", JSON.stringify(dataArr));
+            getData(); // Refresh the data
+        }
+
+        // Function to toggle the sold status of a product
+        function toggleSoldStatus(index) {
+            let dataArr = JSON.parse(localStorage.getItem("sortedData")) || [];
+            dataArr[index].sold = !dataArr[index].sold;
+            localStorage.setItem("sortedData", JSON.stringify(dataArr));
+            getData(); // Refresh the data
+        }
+
+        // Call getData when the page loads
+        window.onload = getData;
+    </script>
+</body>
+</html>

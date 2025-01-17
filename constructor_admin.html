@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+    <nav></nav>
+        <ul>
+            <li><a href="constructor_product.html">Product page</a></li>
+            <li><a href="constuctor1.html">Admin page</a></li>
+        </ul>
+    </nav>
+    <br><br><br>
+    <form id="formData">
+        <label for="product">Product</label> <br>
+        <input type="text" id="product" placeholder="Enter the product" value="">
+        <br><br>
+
+        <label for="category">Category</label><br>
+        <input type="text" id="category" placeholder="Enter the category" value="">
+        <br><br>
+
+        <label for="image">Image</label> <br>
+        <input type="text" id="image" placeholder="Enter the image URL" value="">
+        <br><br>
+
+        <label for="price">Price</label><br>
+        <input type="number" id="price" value="">
+        <br><br>
+
+        <label for="gender">Select gender</label><br>
+        <select name="gender" id="gender">
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+        </select>
+        <br><br>
+
+        <label for="sold">Availability</label><br>
+        <input type="checkbox" id="sold"> <br><br>
+
+        <button id="submit" type="button">Submit</button>
+    </form>
+
+    <script>
+        // Constructor function for the product details
+        function ProductDetails(product, category, image, price, gender, sold) {
+            this.product = product;
+            this.category = category;
+            this.image = image;
+            this.price = price;
+            this.gender = gender;
+            this.sold = sold;
+        }
+
+        // Retrieve data from localStorage or initialize an empty array
+        let dataArr = JSON.parse(localStorage.getItem("sortedData")) || [];
+
+        // Function to handle form data and create a new ProductDetails object
+        function storeData() {
+            let product = document.getElementById("product").value;
+            let category = document.getElementById("category").value;
+            let image = document.getElementById("image").value;
+            let price = document.getElementById("price").value;
+            let gender = document.getElementById("gender").value;
+            let sold = document.getElementById("sold").checked;
+
+            // Create a new ProductDetails object and add it to the data array
+            let product1 = new ProductDetails(product, category, image, price, gender, sold);
+            dataArr.push(product1);
+
+            // Save the updated dataArr to localStorage
+            localStorage.setItem("sortedData", JSON.stringify(dataArr));
+
+            console.log(dataArr); // Log the updated data array
+        }
+
+        // Attach event listener to the submit button
+        document.querySelector("#submit").addEventListener("click", storeData);
+
+        
+    </script>
+</body>
+</html>
+
+
+
+
+    
+
+<!-- //     function storeData(){
+//     //event.preventDefault();
+   
+  
+//     let product = document.getElementById("product").value;
+//     let category=document.getElementById("category").value;
+//     let image = document.getElementById("image").src;
+//     let price=document.getElementById("price").value;
+//     let gender=document.getElementById("gender").value;
+    
+//     data.push({
+//         product:product,
+//         category:category,
+//         image:image,
+//         price:price,
+//         gender:gender
+//     });
+
+//     console.log(data);
+
+// } -->
+
